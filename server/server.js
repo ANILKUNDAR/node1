@@ -14,13 +14,14 @@ app.use(express.static(publicpath));
 io.on('connection',(socket)=>{
   console.log("new user connected");
 
-  socket.emit('newEmail',{
-    from:'anil@gmail.com',
-    text:'hey,Whatsapp',
-    createAt:123
-  });
-  socket.on('createmessage',(message)=>{
+
+  socket.on('createmessage',(message) => {
     console.log('createmessage',message)
+    io.emit('newMessage',{
+      from:message.from,
+      text:message.text,
+      createAt:new Date().getTime()
+    });
   });
 
   socket.on('disconnected',()=>{
